@@ -9,8 +9,26 @@ const sketch = (p) => {
     const transitionSpeed = 0.01;
     const pos1Speed = 0.001;
 
+    // const palette = [
+    //     "#533770", "#6B786C", "#74677E", "#77D7BD", "#8BBDD7", "#9B7B70", "#ffffff", "#9F7E8C", "#A493BB", "#BAC67E", "#BBACE5", "#BEADAC", "#C1C9ED", "#CFC8B5", "#D0ABAC", "#DDD4BC", "#EBE0A3", "#F1A777", "#F5C9B1"
+    // ];
     const palette = [
-        "#533770", "#6B786C", "#74677E", "#77D7BD", "#8BBDD7", "#9B7B70", "#ffffff", "#9F7E8C", "#A493BB", "#BAC67E", "#BBACE5", "#BEADAC", "#C1C9ED", "#CFC8B5", "#D0ABAC", "#DDD4BC", "#EBE0A3", "#F1A777", "#F5C9B1"
+        "#533770",
+        "#6B786C",
+        "#74677E",
+        "#77D7BD",
+        "#8BBBDD",
+        "#9B7B70",
+        "#A493BB",
+        "#BAC67E",
+        "#BBACE5",
+        "#BCDAE9",
+        "#C1C9ED",
+        "#D0ABAC",
+        "#D1EBE9",
+        "#EBE0A3",
+        "#F1A777",
+        "#F5C9B1"
     ];
 
     p.setup = () => {
