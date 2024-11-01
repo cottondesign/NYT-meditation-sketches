@@ -30,8 +30,3 @@
 - **Blur/Effect:** The current text disappearance effect is managed purely with CSS.
   - **Effect Style:** Located in `disappearingText.css` on **Line 35** (`.text span.disappeared`), where you can adjust the appearance of disappearing text.
   - **Timing:** The transition speed is on **Line 42** of the CSS file, while the start delay and letter delay can be modified on **Lines 6 and 7** in the JavaScript file.
-
-## Notes
-This ReadMe consolidates all information for quick reference. Any additional questions can be directed my way till the end of the day.
-
-— Talia
