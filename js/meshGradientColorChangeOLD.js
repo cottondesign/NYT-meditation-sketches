@@ -3,11 +3,10 @@ const sketch = (p) => {
 
     // {pos1, r1, c1, pos2, r2, c2, offsetX, offsetY, startColor, endColor, t}
     const gradData = [];
-    const numGradients = 50;
+    const numGradients = 3;
 
     const speed = 0.002;
     const transitionSpeed = 0.01;
-    const sizeTransition = 0.01;
 
     const palette = [
         "#533770", "#6B786C", "#74677E", "#77D7BD", "#8BBDD7", "#9B7B70", "#ffffff", "#9F7E8C", "#A493BB", "#BAC67E", "#BBACE5", "#BEADAC", "#C1C9ED", "#CFC8B5", "#D0ABAC", "#DDD4BC", "#EBE0A3", "#F1A777", "#F5C9B1"
@@ -21,17 +20,17 @@ const sketch = (p) => {
             const pos1 = [Math.random() * p.width * 2 - p.width, Math.random() * p.height * 2 - p.height];
             const pos2 = [...pos1]; 
             const r1 = Math.random() * 14 + 3;
-            const r2 = p.random(p.width/2, p.width/7);
-            const c1start = palette[Math.floor(Math.random() * palette.length)];
-            const c2start = palette[Math.floor(Math.random() * palette.length)];
-            const c1end = palette[Math.floor(Math.random() * palette.length)]; // c2 always with alpha 0
-            const c2end = palette[Math.floor(Math.random() * palette.length)]; // c2 always with alpha 0
+            // const r2 = Math.random() * 50 + p.width / 4;
+            const r2 = Math.random() * 50 + 100;
+            const startColor = palette[Math.floor(Math.random() * palette.length)];
+            const endColor = palette[Math.floor(Math.random() * palette.length)];
+            const c2 = hexToRgba(endColor, 0); // c2 always with alpha 0
 
             // Adding offsets for Perlin noise
             const offsetX = Math.random() * 1000;
             const offsetY = Math.random() * 1000;
 
-            gradData.push({ pos1, r1, pos2, r2, c1start, c2start, c1end, c2end, offsetX, offsetY, t: 0 });
+            gradData.push({ pos1, r1, startColor, pos2, r2, c2, offsetX, offsetY, endColor, t: 0 });
         }
     };
 
@@ -49,10 +48,9 @@ const sketch = (p) => {
             g.t += transitionSpeed;
             if (g.t >= 1) {
                 g.t = 0; // Reset t for the new transition
-                g.c1start = g.c1end; // Cycle the start color to the current end color
-                g.c1end = palette[Math.floor(Math.random() * palette.length)]; // Choose a new end color
-                g.c2start = g.c2end; // Cycle the start color to the current end color
-                g.c2end = palette[Math.floor(Math.random() * palette.length)]; // Choose a new end color
+                g.startColor = g.endColor; // Cycle the start color to the current end color
+                g.endColor = palette[Math.floor(Math.random() * palette.length)]; // Choose a new end color
+                g.c2 = hexToRgba(g.endColor, 0); // Update c2 with the new end color and alpha 0
             }
 
             const lerpColor = (start, end, t) => {
@@ -64,8 +62,8 @@ const sketch = (p) => {
                 return `rgb(${r}, ${g}, ${b})`;
             };
 
-            const lerpedColor1 = lerpColor(g.c1start, g.c1end, g.t);
-            const lerpedColor2 = lerpColor(g.c2start, g.c2end, g.t);
+            const lerpedColor1 = lerpColor(g.startColor, g.endColor, g.t);
+            const lerpedColor2 = g.c2; // c2 remains transparent
 
             const grad = ctx.createRadialGradient(
                 g.pos1[0],
@@ -76,8 +74,7 @@ const sketch = (p) => {
                 g.r2
             );
             grad.addColorStop(0, lerpedColor1);
-            // console.log(rgbToRgba(lerpedColor2, 0));
-            grad.addColorStop(1, rgbToRgba(lerpedColor2, 0));
+            grad.addColorStop(1, lerpedColor2);
 
             p.push();
             p.noStroke();
@@ -107,19 +104,6 @@ function hexToRgb(hex) {
 function hexToRgba(hex, alpha) {
     const { r, g, b } = hexToRgb(hex);
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-function rgbToRgba(rgbString, alpha) {
-    // Extract the numeric values from the RGB string
-    const rgbValues = rgbString.match(/\d+/g);
-    if (rgbValues && rgbValues.length === 3) {
-        const r = rgbValues[0];
-        const g = rgbValues[1];
-        const b = rgbValues[2];
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    } else {
-        throw new Error("Invalid RGB string format.");
-    }
 }
 
 new p5(sketch);
