@@ -28,7 +28,7 @@ const audioStrings = [
         duration: 1.5
     },
     {
-        str: "what's going to happen",
+        str: "what’s going to happen",
         duration: 2
     },
     {
@@ -47,6 +47,8 @@ function addDisappearClassToSpans(textElem) {
         spans.forEach((span, index) => {
             setTimeout(() => {
                 span.classList.add("disappeared");
+                span.style.top = `${Math.random()*4 - 2}em`;
+                span.style.left = `${Math.random()*4 - 2}em`;
             }, index * disappearOffsetMs);
         });
     }, startDisappearDelay);

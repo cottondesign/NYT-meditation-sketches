@@ -31,11 +31,17 @@ canvas{
 .text span{
     filter: blur(0px);
     opacity:1;
-    transition: 1300ms;
+    transition: filter 1300ms, opacity 1300ms, top 1600ms ease-in-out, left 1600ms ease-in-out;
+    top:0;
+    left:0;
 }
 .text span.disappeared{
     filter: blur(20px);
     opacity:0;
+    position:relative;
+    /* top: -2em; */
+    /* left:-2em; */
+
 }
 
 .text {
