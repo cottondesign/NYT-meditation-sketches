@@ -1,7 +1,7 @@
 const sketch = (p) => {
     let ctx;
 
-    // {pos1, r1, c1, pos2, r2, c2, offsetX, offsetY}
+    // {pos1, r1, c1, pos2, r2, c2, offsetX, offsetY, startColor, endColor, t}
     const gradData = [];
     const numGradients = 40;
 
@@ -17,53 +17,52 @@ const sketch = (p) => {
         ctx = p.drawingContext;
 
         for (let i = 0; i < numGradients; i++) {
-            const pos1 = [Math.random() * p.width*2 - p.width, Math.random() * p.height*2 - p.height];
+            const pos1 = [Math.random() * p.width * 2 - p.width, Math.random() * p.height * 2 - p.height];
             const pos2 = [...pos1]; 
             const r1 = Math.random() * 10 + 1;
             const r2 = Math.random() * 50 + p.width / 3;
-            const c1 = palette[Math.floor(Math.random() * palette.length)];
-            const c2 = hexToRgba(palette[Math.floor(Math.random() * palette.length)], 0);
+            const startColor = palette[Math.floor(Math.random() * palette.length)];
+            const endColor = palette[Math.floor(Math.random() * palette.length)];
+            const c2 = hexToRgba(endColor, 0); // c2 always with alpha 0
 
-            // Initial target colors for transition
-            const targetC1 = palette[Math.floor(Math.random() * palette.length)];
-            const targetC2 = hexToRgba(palette[Math.floor(Math.random() * palette.length)], 0);
+            // Adding offsets for Perlin noise
+            const offsetX = Math.random() * 1000;
+            const offsetY = Math.random() * 1000;
 
-            gradData.push({
-                pos1, r1, c1, targetC1, c1Progress: 0,
-                pos2, r2, c2, targetC2, c2Progress: 0,
-                offsetX: Math.random() * 1000,
-                offsetY: Math.random() * 1000
-            });
+            gradData.push({ pos1, r1, startColor, pos2, r2, c2, offsetX, offsetY, endColor, t: 0 });
         }
     };
 
     p.draw = () => {
         p.background(50);
 
-        gradData.forEach((g, i) => {
+        gradData.forEach((g) => {
             // Update positions with Perlin noise for smooth movement
             g.pos1[0] = p.noise(g.offsetX + p.frameCount * speed) * p.width;
             g.pos1[1] = p.noise(g.offsetY + p.frameCount * speed) * p.height;
             g.pos2[0] = g.pos1[0] + Math.sin(p.frameCount * speed) * 50;
             g.pos2[1] = g.pos1[1] + Math.cos(p.frameCount * speed) * 50;
 
-            // Interpolate colors towards the target colors
-            g.c1 = lerpColor(g.c1, g.targetC1, g.c1Progress);
-            g.c2 = lerpColor(g.c2, g.targetC2, g.c2Progress);
-
-            // Update progress for both color transitions
-            g.c1Progress += transitionSpeed;
-            g.c2Progress += transitionSpeed;
-
-            // If color transition is complete, select new target colors and reset progress
-            if (g.c1Progress >= 1) {
-                g.targetC1 = palette[Math.floor(Math.random() * palette.length)];
-                g.c1Progress = 0;
+            // Lerp the colors
+            g.t += transitionSpeed;
+            if (g.t > 1) {
+                g.t = 0; // Reset to loop the transition
+                g.startColor = g.endColor; // Cycle the start color
+                g.endColor = palette[Math.floor(Math.random() * palette.length)]; // Choose a new end color
+                g.c2 = hexToRgba(g.endColor, 0); // Update c2 with the new end color and alpha 0
             }
-            if (g.c2Progress >= 1) {
-                g.targetC2 = hexToRgba(palette[Math.floor(Math.random() * palette.length)], 0);
-                g.c2Progress = 0;
-            }
+
+            const lerpColor = (start, end, t) => {
+                const startColor = hexToRgb(start);
+                const endColor = hexToRgb(end);
+                const r = Math.round(startColor.r + (endColor.r - startColor.r) * t);
+                const g = Math.round(startColor.g + (endColor.g - startColor.g) * t);
+                const b = Math.round(startColor.b + (endColor.b - startColor.b) * t);
+                return `rgb(${r}, ${g}, ${b})`;
+            };
+
+            const lerpedColor1 = lerpColor(g.startColor, g.endColor, g.t);
+            const lerpedColor2 = g.c2; // c2 remains transparent
 
             const grad = ctx.createRadialGradient(
                 g.pos1[0],
@@ -73,13 +72,13 @@ const sketch = (p) => {
                 g.pos2[1],
                 g.r2
             );
-            grad.addColorStop(0, g.c1);
-            grad.addColorStop(1, g.c2);
+            grad.addColorStop(0, lerpedColor1);
+            grad.addColorStop(1, lerpedColor2);
 
             p.push();
             p.noStroke();
             ctx.fillStyle = grad;
-            p.rect(-p.width, -p.height, p.width*2, p.height*2);
+            p.rect(-p.width, -p.height, p.width * 2, p.height * 2);
             p.pop();
         });
     };
@@ -89,36 +88,21 @@ const sketch = (p) => {
     };
 };
 
-function hexToRgba(hex, alpha) {
+function hexToRgb(hex) {
     // Remove the hash at the start if it's there
     hex = hex.replace(/^#/, '');
 
     // Parse r, g, b values
-    let r = parseInt(hex.substring(0, 2), 16);
-    let g = parseInt(hex.substring(2, 4), 16);
-    let b = parseInt(hex.substring(4, 6), 16);
+    return {
+        r: parseInt(hex.substring(0, 2), 16),
+        g: parseInt(hex.substring(2, 4), 16),
+        b: parseInt(hex.substring(4, 6), 16)
+    };
+}
 
-    // Return the rgba color
+function hexToRgba(hex, alpha) {
+    const { r, g, b } = hexToRgb(hex);
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
-
-function lerpColor(color1, color2, progress) {
-    // Extract RGBA components from color strings
-    const c1 = color1.match(/\d+/g).map(Number);
-    const c2 = color2.match(/\d+/g).map(Number);
-
-    // Ensure both colors have RGBA components (alpha defaults to 1 if missing)
-    const r1 = c1[0], g1 = c1[1], b1 = c1[2], a1 = c1[3] !== undefined ? c1[3] / 255 : 1;
-    const r2 = c2[0], g2 = c2[1], b2 = c2[2], a2 = c2[3] !== undefined ? c2[3] / 255 : 1;
-
-    // Linearly interpolate each component
-    const r = Math.round(r1 + (r2 - r1) * progress);
-    const g = Math.round(g1 + (g2 - g1) * progress);
-    const b = Math.round(b1 + (b2 - b1) * progress);
-    const a = a1 + (a2 - a1) * progress;
-
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-}
-
 
 new p5(sketch);
