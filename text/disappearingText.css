@@ -39,7 +39,7 @@ canvas{
 
 .text {
     opacity: 0;
-    transition: opacity 0.5s ease-in;
+    transition: opacity 0.3s ease-in;
 }
 
 .text.fade-in {
