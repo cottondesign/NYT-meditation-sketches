@@ -4,27 +4,35 @@ const textElements = [
     document.getElementById("text3")
 ];
 const disappearOffsetMs = 50;
-const startDisappearDelay = 400;
+const startDisappearDelay = 700;
 
 const audioStrings = [
     {
         str: "Today is election day",
-        duration: 1.2
+        duration: 3
     },
     {
-        str: "I'm guessing that",
-        duration: 1.2
-    },
-    {
-        str: "feeling very anxious.",
-        duration: 1.2
+        str: "anxious",
+        duration: 2
     },
     {
         str: "heightened anticipation",
         duration: 1.2
     },
     {
-        str: "what is going to happen",
+        str: "tonight",
+        duration: 1.5
+    },
+    {
+        str: "focus",
+        duration: 1.5
+    },
+    {
+        str: "what's going to happen",
+        duration: 2
+    },
+    {
+        str: "rumination",
         duration: 1.2
     },
 ];
@@ -49,8 +57,7 @@ function displayTextWithTiming(textElements, audioStrings) {
     let elementIndex = 0;
 
     audioStrings.forEach((audio, index) => {
-        totalTime += audio.duration * 1000; // Convert duration to milliseconds
-
+        // Set each text to appear after the cumulative total time has passed
         setTimeout(() => {
             const currentTextElem = textElements[elementIndex];
             currentTextElem.innerHTML = stringToSpans(audio.str);
@@ -58,15 +65,20 @@ function displayTextWithTiming(textElements, audioStrings) {
             // Add fade-in effect
             currentTextElem.classList.add("fade-in");
 
-            // Remove fade-in class after transition duration (500ms)
+            // Remove fade-in class after transition duration
             setTimeout(() => {
                 currentTextElem.classList.remove("fade-in");
-            }, 3000); // Match this duration with the CSS transition
+            }, 4000); // Adjust this duration with the CSS transition if needed
 
             addDisappearClassToSpans(currentTextElem);
 
-            elementIndex = (elementIndex + 1) % textElements.length; // Cycle through text elements
+            // Update to next text element
+            elementIndex = (elementIndex + 1) % textElements.length;
+
         }, totalTime);
+
+        // Increment totalTime by the duration for the next text
+        totalTime += audio.duration * 1000; // Convert duration to milliseconds
     });
 }
 
