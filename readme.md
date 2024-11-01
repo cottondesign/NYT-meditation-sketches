@@ -9,10 +9,10 @@
 ### 1. Color Mesh Gradient
 **File:** `/js/meshGradient.js`
 
-- **Color:** Adjusted to a new color palette. You can easily swap colors by modifying the hex values on **Line 11**. Just replace them with the desired color codes.
+- **Color:** Please refresh to see different colors. Adjusted to a new color palette. You can easily swap colors by modifying the hex values on **Line 11**. Just replace them with the desired color codes.
 - **Speed:** The animation speed has been tweaked but can be further customized on **Line 8**.
 - **Number of Gradients:** This parameter is adjustable on **Line 6** if you want to experiment with the gradient density.
-- **In Progress:** Currently, gradients are centered on the canvas. Work is underway to make them fill the full screen; no anticipated issues.
+- **What's In Progress:** Currently, gradients are centered on the canvas. Work is underway to make them fill the full screen; no anticipated issues.
 
 ### 2. Color Mesh Gradient + Color Change
 **Status:** In progress
