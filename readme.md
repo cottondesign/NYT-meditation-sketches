@@ -23,6 +23,7 @@
 
 ### 3. + Text Display
 **File:** `/js/disappearingText.js`
+**CSS:** `/text/disappearingText.css`
 
 - **Text:** Each line of text is defined in an array, with durations assigned to control display time. Easily modifiable in the initial lines of the code.
 - **Blur/Effect:** The current text disappearance effect is managed purely with CSS.
