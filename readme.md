@@ -22,9 +22,7 @@
 - Once finished, it will be easy to swap in/out with the existing gradient setup.
 
 ### 3. + Text Display
-**File:** `/js/disappearingText.js`
-
-**CSS:** `/text/disappearingText.css`
+**Files:** `/js/disappearingText.js` `/text/disappearingText.css`
 
 - **Text:** Each line of text is defined in an array, with durations assigned to control display time. Easily modifiable in the initial lines of the code.
 - **Blur/Effect:** The current text disappearance effect is managed purely with CSS.
