@@ -7,7 +7,7 @@ const sketch = (p) => {
 
     const speed = 0.002;
     const transitionSpeed = 0.01;
-    const sizeTransition = 0.01;
+    const pos1Speed = 0.001;
 
     const palette = [
         "#533770", "#6B786C", "#74677E", "#77D7BD", "#8BBDD7", "#9B7B70", "#ffffff", "#9F7E8C", "#A493BB", "#BAC67E", "#BBACE5", "#BEADAC", "#C1C9ED", "#CFC8B5", "#D0ABAC", "#DDD4BC", "#EBE0A3", "#F1A777", "#F5C9B1"
@@ -28,8 +28,8 @@ const sketch = (p) => {
             const c2end = palette[Math.floor(Math.random() * palette.length)]; // c2 always with alpha 0
 
             // Adding offsets for Perlin noise
-            const offsetX = Math.random() * 1000;
-            const offsetY = Math.random() * 1000;
+            const offsetX = Math.random() * 2000;
+            const offsetY = Math.random() * 2000;
 
             gradData.push({ pos1, r1, pos2, r2, c1start, c2start, c1end, c2end, offsetX, offsetY, t: 0 });
         }
@@ -40,8 +40,8 @@ const sketch = (p) => {
 
         gradData.forEach((g) => {
             // Update positions with Perlin noise for smooth movement
-            g.pos1[0] = p.noise(g.offsetX + p.frameCount * speed) * p.width;
-            g.pos1[1] = p.noise(g.offsetY + p.frameCount * speed) * p.height;
+            g.pos1[0] = p.noise(g.offsetX + p.frameCount * pos1Speed) * p.width;
+            g.pos1[1] = p.noise(g.offsetY + p.frameCount * pos1Speed) * p.height;
             g.pos2[0] = g.pos1[0] + Math.sin(p.frameCount * speed) * 50;
             g.pos2[1] = g.pos1[1] + Math.cos(p.frameCount * speed) * 50;
 
@@ -76,7 +76,6 @@ const sketch = (p) => {
                 g.r2
             );
             grad.addColorStop(0, lerpedColor1);
-            // console.log(rgbToRgba(lerpedColor2, 0));
             grad.addColorStop(1, rgbToRgba(lerpedColor2, 0));
 
             p.push();

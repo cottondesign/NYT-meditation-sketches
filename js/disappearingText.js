@@ -3,16 +3,16 @@ const textElements = [
     document.getElementById("text2"),
     document.getElementById("text3")
 ];
-const disappearOffsetMs = 30;
+const disappearOffsetMs = 50;
 const startDisappearDelay = 400;
 
 const audioStrings = [
     {
-        str: "Today is election day, and,",
+        str: "Today is election day",
         duration: 1.2
     },
     {
-        str: "I'm guessing that a lot of people woke up this morning",
+        str: "I'm guessing that",
         duration: 1.2
     },
     {
@@ -20,11 +20,11 @@ const audioStrings = [
         duration: 1.2
     },
     {
-        str: "A sense of heightened anticipation about",
+        str: "heightened anticipation",
         duration: 1.2
     },
     {
-        str: "what is going to happen tonight, and the days to come.",
+        str: "what is going to happen",
         duration: 1.2
     },
 ];
