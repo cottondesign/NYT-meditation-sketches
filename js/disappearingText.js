@@ -17,11 +17,11 @@ const audioStrings = [
     },
     {
         str: "heightened anticipation",
-        duration: 1.2
+        duration: 2.4
     },
     {
         str: "tonight",
-        duration: 1.5
+        duration: 1.2
     },
     {
         str: "focus",
