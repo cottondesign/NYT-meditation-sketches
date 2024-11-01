@@ -1,7 +1,7 @@
 # Project Overview
 
 ## Live Preview & Repository Access
-- **Live Sketches:** See the latest version of live sketches [here](#).
+- **Live Sketches:** See the latest version of live sketches [here](https://nyt-election-meditation-2024.netlify.app/).
 - **GitHub Repository:** This is a public repository, enabling the development team to access and make changes seamlessly.
 
 ## Feature Breakdown
