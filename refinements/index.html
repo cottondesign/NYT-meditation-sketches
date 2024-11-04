@@ -7,23 +7,31 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>NYT Meditation Sketches</title>
+        <title>Mesh + Disappearing Text</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <!-- <link rel="stylesheet" href="../text/disappearingText.css"> -->
+         <style>
+            canvas{
+                position:fixed;
+                top:0;
+                left:0;
+                z-index:-1;
+                width:100vw;
+                height:100vh;
+                object-fit: cover;
+            }
+         </style>
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+        <div class="text" id="text1"></div>
+        <div class="text" id="text2"></div>
+        <div class="text" id="text3"></div>
 
-        <h1>NYT Meditation sketches</h1>
-        <a href="/color">1. Color Mesh Gradient</a><br>
-        <a href="/colorChange">2. Color Mesh Gradient with Changing Colors (WIP)</a><br>
-        <a href="/text">3. Color Mesh Gradient + Text Disappearing</a><br>
-        <a href="/refinements">4. Refinements</a>
-
-        
-        <script src="" async defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.min.js"></script>
+        <script src="/js/refinements.js"></script>
     </body>
 </html>
